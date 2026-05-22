@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>settla — Privacy</title>
+<meta name="description" content="settla's privacy approach: take less, store less, explain it plainly." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* warm theme — locked to match landing page */
+    --bg: #F1ECE3;
+    --bg-elev: #F8F4EC;
+    --ink: #1A1612;
+    --ink-2: rgba(26,22,18,0.65);
+    --ink-3: rgba(26,22,18,0.45);
+    --line: rgba(26,22,18,0.12);
+    --line-2: rgba(26,22,18,0.07);
+    --chip-bg: rgba(26,22,18,0.045);
+    --font-display: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  /* grain — same noise filter as index.html */
+  .bg-grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 240px 240px;
+    mix-blend-mode: multiply;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 40px);
+  }
+
+  /* header */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid var(--line-2);
+  }
+  header.site .wrap {
+    max-width: 1120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand-logo-svg {
+    display: block;
+    height: 22px;
+    width: auto;
+    color: var(--ink);
+  }
+  .back {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-2);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color .15s;
+  }
+  .back:hover { color: var(--ink); }
+
+  /* hero */
+  .page-hero {
+    padding: clamp(50px, 10vh, 100px) 0 clamp(20px, 4vh, 40px);
+  }
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .crumb::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--ink-3);
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+    color: var(--ink-2);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .meta {
+    margin-top: 28px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+
+  /* summary panel */
+  .tldr {
+    margin: clamp(30px, 5vh, 56px) 0 clamp(40px, 7vh, 70px);
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(22px, 3vw, 32px);
+  }
+  .tldr h2 {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .tldr ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tldr li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 14px;
+    font-size: 0.97rem;
+    color: var(--ink);
+  }
+  .tldr li::before {
+    content: "";
+    grid-column: 1;
+    margin-top: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink);
+    align-self: start;
+  }
+  .tldr li b {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .tldr li span {
+    color: var(--ink-2);
+  }
+
+  /* sections */
+  .doc { padding-bottom: clamp(40px, 8vh, 80px); }
+  section.s {
+    padding: clamp(30px, 5vh, 50px) 0;
+    border-top: 1px solid var(--line);
+  }
+  section.s:first-of-type { border-top: 0; padding-top: 0; }
+  .s-head {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+  .s-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 2.1vw, 1.6rem);
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .s p {
+    margin: 0 0 14px 66px;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .s p + p { margin-top: -2px; }
+  .s p.muted { color: var(--ink-2); }
+  .s ul.list {
+    margin: 4px 0 14px 66px;
+    padding-left: 18px;
+    color: var(--ink);
+  }
+  .s ul.list li { margin: 4px 0; }
+  .s ul.list li::marker { color: var(--ink-3); }
+
+  @media (max-width: 600px) {
+    .s-head { grid-template-columns: 36px 1fr; gap: 12px; }
+    .s p, .s ul.list { margin-left: 48px; }
+    .s ul.list { margin-left: 66px; }
+  }
+
+  /* footer */
+  footer.site {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 40px;
+    margin-top: clamp(40px, 8vh, 80px);
+  }
+  footer.site .wrap {
+    max-width: 1120px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+  }
+  footer.site a {
+    color: var(--ink-2);
+    text-decoration: none;
+    margin-right: 22px;
+  }
+  footer.site a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="bg-grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a href="index.html" class="brand" aria-label="settla">
+      <svg viewBox="0 0 300 92" xmlns="http://www.w3.org/2000/svg" class="brand-logo-svg" role="img" aria-label="settla">
+<path d="M30.464 91.136C24.6613 91.136 19.5413 90.1973 15.104 88.32C10.6667 86.3573 7.12533 83.7547 4.48 80.512C1.92 77.184 0.426667 73.4293 0 69.248H19.072C19.4133 70.6133 20.0533 71.8933 20.992 73.088C22.016 74.1973 23.296 75.136 24.832 75.904C26.368 76.5867 28.1173 76.928 30.08 76.928C32.2133 76.928 33.92 76.6293 35.2 76.032C36.5653 75.4347 37.5467 74.7093 38.144 73.856C38.8267 72.9173 39.168 71.9787 39.168 71.04C39.168 69.5893 38.656 68.48 37.632 67.712C36.608 66.944 35.1573 66.2613 33.28 65.664C31.4027 65.0667 29.184 64.4267 26.624 63.744C23.808 62.976 20.9493 62.1653 18.048 61.312C15.1467 60.3733 12.4587 59.264 9.984 57.984C7.50933 56.704 5.54667 54.9973 4.096 52.864C2.64533 50.7307 1.92 48.0853 1.92 44.928C1.92 41.1733 2.944 37.76 4.992 34.688C7.12533 31.616 10.1973 29.184 14.208 27.392C18.2187 25.5147 23.04 24.576 28.672 24.576C36.608 24.576 42.88 26.368 47.488 29.952C52.096 33.4507 54.8267 38.272 55.68 44.416H37.76C37.3333 42.624 36.3093 41.2587 34.688 40.32C33.152 39.3813 31.1467 38.912 28.672 38.912C25.9413 38.912 23.8507 39.424 22.4 40.448C21.0347 41.3867 20.352 42.496 20.352 43.776C20.352 44.8853 20.864 45.824 21.888 46.592C22.912 47.2747 24.3627 47.9147 26.24 48.512C28.2027 49.024 30.464 49.664 33.024 50.432C37.8027 51.6267 42.0693 52.9067 45.824 54.272C49.664 55.552 52.6933 57.3867 54.912 59.776C57.1307 62.08 58.24 65.408 58.24 69.76C58.3253 73.856 57.216 77.5253 54.912 80.768C52.6933 83.9253 49.4933 86.4427 45.312 88.32C41.216 90.1973 36.2667 91.136 30.464 91.136Z" fill="currentColor"></path>
+<path d="M92.702 91.136C86.046 91.136 80.158 89.7707 75.038 87.04C70.0033 84.3093 66.0353 80.512 63.134 75.648C60.318 70.6987 58.91 65.024 58.91 58.624C58.91 52.0533 60.318 46.208 63.134 41.088C65.95 35.968 69.8753 31.9573 74.91 29.056C79.9447 26.0693 85.8327 24.576 92.574 24.576C98.974 24.576 104.606 25.9413 109.47 28.672C114.419 31.4027 118.302 35.1573 121.118 39.936C123.934 44.7147 125.342 50.2187 125.342 56.448C125.342 57.3013 125.299 58.2827 125.214 59.392C125.214 60.416 125.171 61.4827 125.086 62.592H72.478V51.328H105.758C105.502 47.9147 104.137 45.1413 101.662 43.008C99.2727 40.8747 96.286 39.808 92.702 39.808C89.9713 39.808 87.454 40.448 85.15 41.728C82.9313 42.9227 81.1393 44.8 79.774 47.36C78.494 49.8347 77.854 53.0347 77.854 56.96V60.672C77.854 63.5733 78.4513 66.176 79.646 68.48C80.8407 70.6987 82.5473 72.448 84.766 73.728C86.9847 74.9227 89.5447 75.52 92.446 75.52C95.1767 75.52 97.4807 74.9227 99.358 73.728C101.321 72.5333 102.814 70.9973 103.838 69.12H123.422C122.227 73.216 120.179 76.928 117.278 80.256C114.377 83.584 110.793 86.2293 106.526 88.192C102.345 90.1547 97.7367 91.136 92.702 91.136Z" fill="currentColor"></path>
+<path d="M157.412 89.6C152.719 89.6 148.58 88.8747 144.996 87.424C141.497 85.888 138.724 83.4133 136.676 80C134.713 76.5867 133.732 71.936 133.732 66.048V41.728H122.98V26.112H133.732L135.908 8.32H153.06V26.112H169.316V41.728H152.932V66.304C152.932 68.9493 153.529 70.8267 154.724 71.936C155.919 72.96 157.924 73.472 160.74 73.472H169.188V89.6H157.412Z" fill="currentColor"></path>
+<path d="M200.042 89.6C195.349 89.6 191.21 88.8747 187.626 87.424C184.127 85.888 181.354 83.4133 179.306 80C177.343 76.5867 176.362 71.936 176.362 66.048V41.728H165.61V26.112H176.362L178.538 8.32H195.69V26.112H211.946V41.728H195.562V66.304C195.562 68.9493 196.159 70.8267 197.354 71.936C198.549 72.96 200.554 73.472 203.37 73.472H211.818V89.6H200.042Z" fill="currentColor"></path>
+<path d="M213.36 89.6V0H232.56V89.6H213.36Z" fill="currentColor"></path>
+<path d="M258.83 91.136C253.795 91.136 249.657 90.2827 246.414 88.576C243.171 86.8693 240.782 84.608 239.246 81.792C237.795 78.8907 237.07 75.6907 237.07 72.192C237.07 68.352 238.009 64.9813 239.886 62.08C241.849 59.0933 244.878 56.7467 248.974 55.04C253.07 53.3333 258.318 52.48 264.718 52.48H280.334C280.334 49.5787 279.95 47.232 279.182 45.44C278.414 43.5627 277.177 42.1973 275.47 41.344C273.849 40.4053 271.673 39.936 268.942 39.936C265.955 39.936 263.353 40.576 261.134 41.856C259.001 43.136 257.678 45.1413 257.166 47.872H238.734C239.161 43.1787 240.697 39.1253 243.342 35.712C245.987 32.2133 249.486 29.4827 253.838 27.52C258.275 25.5573 263.353 24.576 269.07 24.576C275.214 24.576 280.547 25.5573 285.07 27.52C289.678 29.4827 293.219 32.4267 295.694 36.352C298.254 40.192 299.534 44.928 299.534 50.56V89.6H283.662L281.614 80H281.102C279.737 81.8773 278.243 83.5413 276.622 84.992C275.001 86.3573 273.251 87.5093 271.374 88.448C269.582 89.3013 267.619 89.9413 265.486 90.368C263.353 90.88 261.134 91.136 258.83 91.136ZM265.614 76.544C267.747 76.544 269.582 76.2027 271.118 75.52C272.654 74.8373 273.977 73.9413 275.086 72.832C276.281 71.6373 277.219 70.272 277.902 68.736C278.585 67.2 279.097 65.536 279.438 63.744H267.022C264.803 63.744 262.969 64.0427 261.518 64.64C260.153 65.152 259.129 65.92 258.446 66.944C257.763 67.8827 257.422 69.0347 257.422 70.4C257.422 71.7653 257.763 72.9173 258.446 73.856C259.129 74.7093 260.11 75.392 261.39 75.904C262.67 76.3307 264.078 76.544 265.614 76.544Z" fill="currentColor"></path>
+</svg>
+    </a>
+    <a href="index.html" class="back">← Back</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-hero wrap">
+    <div class="crumb">Privacy · Plain-language notice</div>
+    <h1>Take less, store less, explain it plainly.</h1>
+    <p class="lede">
+      The settla app doesn't exist yet, so this page covers one thing only:
+      the email address you give us if you join the waitlist. We'll publish a
+      full app privacy policy before launch.
+    </p>
+    <div class="meta">Effective 22 May 2026 · v0.1 (waitlist)</div>
+  </section>
+
+  <div class="wrap">
+    <div class="tldr">
+      <h2>The short version</h2>
+      <ul>
+        <li><div><b>One thing collected</b><span>Your email address. Nothing else — no name, no location, no tracking pixel.</span></div></li>
+        <li><div><b>One thing sent</b><span>One email, on launch day. No newsletter, no drip campaign, no "while you wait" promos.</span></div></li>
+        <li><div><b>Stored in the EU</b><span>On servers inside the European Economic Area, controlled by Settla Solutions AS in Snarøya, Norway.</span></div></li>
+        <li><div><b>Yours to remove</b><span>Reply to any email from us with "remove" and we delete your address within seven days.</span></div></li>
+        <li><div><b>Never sold</b><span>We don't sell, rent or share email addresses with anyone — investors, partners, or otherwise.</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc wrap">
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 01</span><h2>Who's behind this</h2></div>
+      <p>Settla Solutions AS (org.nr. 931 103 814), an independent company registered at Fürstveien 49 A, 1367 Snarøya, Norway, is the data controller for the email addresses submitted on this site. You can reach the team at <a href="mailto:atle.timenes@settla.no"><span class="__cf_email__" data-cfemail="39584d555c174d50545c575c4a794a5c4d4d5558175756">atle.timenes@settla.no</span></a>.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 02</span><h2>What we collect</h2></div>
+      <p>If you submit the waitlist form, we receive:</p>
+      <ul class="list">
+        <li>the email address you typed,</li>
+        <li>the date and time you submitted it,</li>
+        <li>and a short, rotating hash used to prevent automated abuse.</li>
+      </ul>
+      <p class="muted">We don't set advertising cookies, run third-party analytics, or fingerprint your browser. The only cookie this site uses is a single preference one to remember your language choice (EN / NO) — and that one lives entirely on your device.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 03</span><h2>What we use it for</h2></div>
+      <p>One purpose: to send you a single email when the settla app launches, so you can be among the first to download it. That's it.</p>
+      <p>We won't email you between now and launch unless something important changes — for example, if we have to delay the launch, or if we ever change this policy in a way that affects you.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 04</span><h2>Where it lives</h2></div>
+      <p>Waitlist emails are stored in a database hosted inside the European Economic Area, with encryption at rest. Backups are kept for 30 days and then permanently deleted.</p>
+      <p>We use a small number of EU-based vendors to send launch emails and host this site. They process data on our behalf, under written agreements, and they can't use it for anything else.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 05</span><h2>Your rights</h2></div>
+      <p>Under the GDPR and Norwegian personal-data law, you have the right to know what we hold about you, to correct it, to have it deleted, and to lodge a complaint with the Norwegian Data Protection Authority (Datatilsynet) if you think we've handled it badly.</p>
+      <p>Write to <a href="mailto:atle.timenes@settla.no"><span class="__cf_email__" data-cfemail="93f2e7fff6bde7fafef6fdf6e0d3e0f6e7e7fff2bdfdfc">atle.timenes@settla.no</span></a> and we'll respond within 30 days — usually within a few working days.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 06</span><h2>How long we keep it</h2></div>
+      <p>Until launch + 60 days, or until you ask us to remove it — whichever comes first. After the launch email goes out, we offer a clear one-click unsubscribe, and we delete the address from active systems within 7 days of unsubscribing.</p>
+    </section>
+
+    <section class="s">
+      <div class="s-head"><span class="s-num">§ 07</span><h2>If this changes</h2></div>
+      <p>If we change this policy in a way that matters — for example, by collecting something new — we'll email everyone on the waitlist before the change takes effect, and we'll keep prior versions linked at the bottom of this page.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>© 2026 Settla Solutions AS · Fürstveien 49 A, 1367 Snarøya, Norway · Org.nr. 931 103 814</div>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:atle.timenes@settla.no"><span class="__cf_email__" data-cfemail="1d7c697178336974707873786e5d6e786969717c337372">atle.timenes@settla.no</span></a>
+    </nav>
+  </div>
+</footer>
+
+
+<script>
+// Preserve the preview session token across in-page navigation (no-op in prod).
+(function(){
+  var t = new URLSearchParams(location.search).get('t');
+  if (!t) return;
+  function carry(){
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var href = a.getAttribute('href');
+      if (!href || /^(?:https?:|mailto:|tel:|#|data:|javascript:)/i.test(href)) return;
+      if (/[?&]t=/.test(href)) return;
+      a.setAttribute('href', href + (href.includes('?') ? '&' : '?') + 't=' + t);
+    });
+  }
+  if (document.readyState !== 'loading') carry();
+  else document.addEventListener('DOMContentLoaded', carry);
+})();
+</script>
+
+</body>
+</html>
